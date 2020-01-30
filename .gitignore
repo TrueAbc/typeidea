@@ -1,3 +1,4 @@
 *.pyc
 *.sqp
 *.sqlite3
+.idea
