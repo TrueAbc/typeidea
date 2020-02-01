@@ -9,7 +9,6 @@ from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
 
 
-
 # Register your models here.
 class PostInline(admin.TabularInline):  # StackedInline 样式不同
     # 在分类界面编辑文章的内容
@@ -37,7 +36,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline, ]
 
-    list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
+    list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count', 'id')
     fields = ('name', 'status', 'is_nav')
     list_filter = [CategoryOwnerFilter]
 
