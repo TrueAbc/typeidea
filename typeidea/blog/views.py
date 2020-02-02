@@ -1,11 +1,14 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.views.generic import DetailView, ListView
 
+from comment.forms import CommentForm
+from comment.models import Comment
 from .models import Tag, Post, Category
-from config.models import SideBar
+from config.models import SideBar, Link
 
 
 class CommonViewMixin:
@@ -73,3 +76,37 @@ class PostDetailView(DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data()
+        context.update({
+            'comment_form': CommentForm,
+            'comment_list': Comment.get_by_target(self.request.path),
+        })
+
+        return context
+
+
+class SearchView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data()
+        context.update({
+            'keyword': self.request.GET.get('keyword', ''),
+        })
+        return context
+
+    def get_queryset(self):
+        queryset = super(SearchView, self).get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))
+
+
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super(AuthorView, self).get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
+
+

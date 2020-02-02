@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
     <title>{% block title%} 首页{% endblock %} - typeidea 博客系统</title>
     <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
     <style>
-        .post{
+        .post {
             margin-bottom: 5px;
         }
     </style>
@@ -25,8 +26,8 @@
                         </li>
                     {% endfor%}
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control my-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" action="/search/" method="GET">
+                    <input class="form-control my-sm-2" type="search"  name="keyword"  value="{{keyword}}" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">搜索</button>
                 </form>
             </div>
