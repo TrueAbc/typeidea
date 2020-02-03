@@ -59,7 +59,7 @@ class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
 
     list_display = ('title', 'category', 'status',
-                    'created_time', 'owner', 'operator')
+                    'created_time', 'owner', 'operator', 'pv')
     list_display_links = []
     list_filter = ['category']
     search_fields = ['title', 'category__name']
@@ -95,7 +95,7 @@ class PostAdmin(BaseOwnerAdmin):
             ),
         }),
         ('额外信息', {
-            'classes': ('collapse',),
+            # 'classes': ('collapse',),
             'fields': ('tag',),
         })
     )

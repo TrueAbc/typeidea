@@ -1,5 +1,8 @@
-from django.db.models import Q
+from datetime import date
+
+from django.db.models import Q, F
 from django.http import HttpResponse
+from django.core.cache import cache
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -77,14 +80,30 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
 
-    def get_context_data(self, **kwargs):
-        context = super(PostDetailView, self).get_context_data()
-        context.update({
-            'comment_form': CommentForm,
-            'comment_list': Comment.get_by_target(self.request.path),
-        })
+    def get(self, request, *args, **kwargs):
+        pass
 
-        return context
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid, self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid,str(date.today()), self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key, 1, 1*60)  # 1分钟有效
+
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(uv_key, 1, 24*60*60)  # 24 小时有效
+
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1, uv=F('uv')+1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(uv=F('uv')+1)
+
 
 
 class SearchView(IndexView):
