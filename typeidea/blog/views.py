@@ -1,7 +1,6 @@
 from datetime import date
 
 from django.db.models import Q, F
-from django.http import HttpResponse
 from django.core.cache import cache
 from django.shortcuts import render, get_object_or_404
 
@@ -81,7 +80,9 @@ class PostDetailView(DetailView):
     pk_url_kwarg = 'post_id'
 
     def get(self, request, *args, **kwargs):
-        pass
+        response = super(PostDetailView, self).get(request)
+        self.handle_visited()
+        return response
 
     def handle_visited(self):
         increase_pv = False
@@ -103,7 +104,6 @@ class PostDetailView(DetailView):
             Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1)
         elif increase_uv:
             Post.objects.filter(pk=self.object.id).update(uv=F('uv')+1)
-
 
 
 class SearchView(IndexView):

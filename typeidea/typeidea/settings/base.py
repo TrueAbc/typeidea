@@ -36,6 +36,13 @@ INSTALLED_APPS = [
     'config',
     'comment',
 
+    'dal',
+    'dal_select2',
+    'ckeditor',
+    'ckeditor_uploader',  # 增加这行的配置是上传图片使用
+    'xadmin',
+    'crispy_forms',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -116,6 +123,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpace': 4,
+        'extraPlugins': 'codesnippet',  # 配置代码插件
+    }
+}
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -133,4 +149,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+XADMIN_TITLE = 'TypeIdea后台管理'
+XADMIN_FOOTER_TITLE = 'power by Zaia Enterprise'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = 'article_images'
+
+DEFAULT_FILE_STORAGE = 'typeidea.storage.WatermarkStorage'
