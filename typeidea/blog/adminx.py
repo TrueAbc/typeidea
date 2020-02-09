@@ -68,7 +68,6 @@ class PostAdmin(BaseOwnerAdmin):
     list_display = ('title', 'category', 'status',
                     'created_time', 'owner', 'operator', 'pv')
     list_display_links = []
-    list_filter = ['category']
     search_fields = ['title', 'category__name']
 
     form_layout = (
@@ -95,22 +94,6 @@ class PostAdmin(BaseOwnerAdmin):
 
     # 编辑页面排除的字段
     exclude = ('owner', )
-
-    form_layout = (
-        Fieldset(
-            '基础信息',
-            Row('title', 'category'),
-            'status',
-            'tag',
-        ),
-        Fieldset(
-            '内容信息',
-            'desc',
-            'content',
-        )
-    )
-
-    filter_horizontal = ('tag', )
 
     def operator(self, obj):
         return format_html(

@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 import xadmin
+from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -26,9 +28,15 @@ from blog.views import (
     IndexView, CategoryView, TagView,
     PostDetailView, SearchView, AuthorView
 )
+from blog.apis import PostViewSet, CategoryViewSet
 from config.views import LinkListView
 from comment.views import CommentView
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
+
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet, basename=('api-post'))
+router.register(r'category', CategoryViewSet, basename=('api-category'))
 
 # pk是主键(primary key), 主键的名字不一定是id
 urlpatterns = [
@@ -47,4 +55,11 @@ urlpatterns = [
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view(), name='post-detail'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    url(r'^api/', include(router.urls)),
+    url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^silk/', include('silk.urls', namespace='silk'))
+    ]

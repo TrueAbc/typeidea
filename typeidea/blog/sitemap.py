@@ -17,3 +17,4 @@ class PostSitemap(Sitemap):
 
     def location(self, obj):
         return reverse('post-detail', args=[obj.pk])
+
