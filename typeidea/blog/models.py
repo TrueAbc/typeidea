@@ -1,5 +1,6 @@
 import mistune
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -117,7 +118,12 @@ class Post(models.Model):
 
     @classmethod
     def hot_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+        # 使用局部缓存来优化部分内容
+        result = cache.get('hot_posts')
+        if not result:
+            result = cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+            cache.set('hot_posts', result, 10*60)
+        return result
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
