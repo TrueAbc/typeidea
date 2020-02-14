@@ -29,7 +29,7 @@ setup(
 'decorator==4.4.1',
 'defusedxml==0.6.0',
 'diff-match-patch==20181111',
-'Django==2.0',
+'Django==2.2.10',
 'django-autocomplete-light==3.2.10',
 'django-ckeditor==5.9.0',
 'django-cors-headers==3.2.1',
