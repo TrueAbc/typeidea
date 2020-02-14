@@ -89,7 +89,7 @@ class PostDetailView(DetailView):
         increase_uv = False
         uid = self.request.uid
         pv_key = 'pv:%s:%s' % (uid, self.request.path)
-        uv_key = 'uv:%s:%s:%s' % (uid,str(date.today()), self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
         if not cache.get(pv_key):
             increase_pv = True
             cache.set(pv_key, 1, 1*60)  # 1分钟有效

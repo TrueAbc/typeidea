@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',  # 增加这行的配置是上传图片使用
     'xadmin',
     'crispy_forms',
+    'captcha',
 
     'django.contrib.admin',
     'django.contrib.auth',
