@@ -18,10 +18,12 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.documentation import include_docs_urls
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views import static as st
 from django.contrib import admin
 from django.conf.urls import url, include
 from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 
@@ -58,8 +60,10 @@ urlpatterns = [
     url(r'^admin/', xadmin.site.urls, name='xadmin'),
     url(r'^api/', include(router.urls)),
     url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
+    url(r'^static/(?P<path>.*)$', st.serve, {'document_root': settings.STATIC_ROOT}, name='static'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += staticfiles_urlpatterns()  # gunicorn启动时需要进行配置
 if settings.DEBUG:
     urlpatterns += [
         url(r'^silk/', include('silk.urls', namespace='silk'))
