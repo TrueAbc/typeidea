@@ -51,7 +51,7 @@ setup(
 'gprof2dot==2019.11.30',
 'gunicorn==20.0.4',
 'hiredis==1.0.1',
-'httplib2==0.9.2',
+'httplib2==0.18.0',
 'idna==2.8',
 'ipython==7.12.0',
 'ipython-genutils==0.2.0',
