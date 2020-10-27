@@ -25,7 +25,7 @@ setup(
 'cffi==1.14.0',
 'coreapi==2.3.3',
 'coreschema==0.0.4',
-'cryptography==2.8',
+'cryptography==3.2',
 'decorator==4.4.1',
 'defusedxml==0.6.0',
 'diff-match-patch==20181111',
